@@ -10,7 +10,7 @@ let podcast = Podcast(title : "My New Podcast", link : "https://my-new-podcast.d
 print(podcast.getFeed())
 ```
 would produce the string
-```
+```xml
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
     <channel>
@@ -25,5 +25,5 @@ would produce the string
 - [Swift Package Manager](https://swift.org/package-manager/):
 
 	```swift
-    .package(url: "https://github.com/CallumKerrEdwards/PodcastFeedKit.git", from: "0.0.1")
+    .package(url: "https://github.com/CallumKerrEdwards/PodcastFeedKit.git", from: "0.0.2")
 	```
