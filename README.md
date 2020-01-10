@@ -15,4 +15,4 @@ let podcast = Podcast(title : "My New Podcast", link : "https://my-new-podcast.d
 
 	```swift
     .package(url: "https://github.com/CallumKerrEdwards/PodcastFeedKit.git", from: "0.0.1")
-	`
+	```
