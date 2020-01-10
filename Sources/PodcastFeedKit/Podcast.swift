@@ -6,6 +6,7 @@ class Podcast {
     private var block = false
     private var explicit: Bool?
     private var languageCode: String?
+    private var author: String?
 
    init(title: String,
        link: String) {
@@ -27,7 +28,10 @@ class Podcast {
         self.languageCode = code
         return self
     }
-
+    func withAuthor(_ author: String?) -> Self {
+    	self.author = author
+	return self
+    }
     func getFeed() -> String {
         let podcastFeed = AEXMLDocument()
         let attributes = ["xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd", "version": "2.0"]
@@ -47,6 +51,9 @@ class Podcast {
         }
         if let languageCode: String = languageCode {
             channel.addChild(name: "language", value: languageCode)
+        }
+        if let author: String = author {
+            channel.addChild(name: "itunes:author", value: author)
         }
         return podcastFeed.xml.replacingOccurrences(of: "\t", with: "    ")
     }
