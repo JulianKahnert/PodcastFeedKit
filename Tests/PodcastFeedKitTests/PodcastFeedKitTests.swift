@@ -3,7 +3,7 @@ import XCTest
 
 final class PodcastFeedKitTests: XCTestCase {
     func testFeedGeneratesWithMinimalAttributes() {
-    
+
         let expectedOutput = """
         <?xml version="1.0" encoding="utf-8" standalone="no"?>
         <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
@@ -15,9 +15,9 @@ final class PodcastFeedKitTests: XCTestCase {
         """
         XCTAssertEqual(Podcast(title: "Test Podcast Title", link: "https://demo.url/feed.rss").getFeed(), expectedOutput)
     }
-    
+
     func testFeedGeneratesWithCleanAttribute() {
-    
+
         let expectedOutput = """
         <?xml version="1.0" encoding="utf-8" standalone="no"?>
         <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
@@ -28,14 +28,14 @@ final class PodcastFeedKitTests: XCTestCase {
             </channel>
         </rss>
         """
-        XCTAssertEqual(Podcast(title: "Test Podcast Title", 
+        XCTAssertEqual(Podcast(title: "Test Podcast Title",
                                link: "https://demo.url/feed.rss")
                                .containsExplicitMaterial(false)
                                .getFeed(), expectedOutput)
     }
-    
+
     func testFeedGeneratesWithExplicitAttribute() {
-    
+
         let expectedOutput = """
         <?xml version="1.0" encoding="utf-8" standalone="no"?>
         <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
@@ -46,14 +46,14 @@ final class PodcastFeedKitTests: XCTestCase {
             </channel>
         </rss>
         """
-        XCTAssertEqual(Podcast(title: "Test Podcast Title", 
+        XCTAssertEqual(Podcast(title: "Test Podcast Title",
                                link: "https://demo.url/feed.rss")
                                .containsExplicitMaterial()
                                .getFeed(), expectedOutput)
     }
-    
+
    func testFeedGeneratesWithBlockAttribute() {
-   
+
        let expectedOutput = """
        <?xml version="1.0" encoding="utf-8" standalone="no"?>
        <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
@@ -64,14 +64,14 @@ final class PodcastFeedKitTests: XCTestCase {
            </channel>
        </rss>
        """
-       XCTAssertEqual(Podcast(title: "Test Podcast Title", 
+       XCTAssertEqual(Podcast(title: "Test Podcast Title",
                               link: "https://demo.url/feed.rss")
                               .blockFromITunes()
                               .getFeed(), expectedOutput)
    }
-   
+
    func testFeedGeneratesWithLanguageCode() {
-   
+
        let expectedOutput = """
        <?xml version="1.0" encoding="utf-8" standalone="no"?>
        <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
@@ -82,7 +82,7 @@ final class PodcastFeedKitTests: XCTestCase {
            </channel>
        </rss>
        """
-       XCTAssertEqual(Podcast(title: "Test Podcast Title", 
+       XCTAssertEqual(Podcast(title: "Test Podcast Title",
                               link: "https://demo.url/feed.rss")
                               .withLanguageCode(Language.english_uk.rawValue)
                               .getFeed(), expectedOutput)
@@ -93,6 +93,6 @@ final class PodcastFeedKitTests: XCTestCase {
         ("testFeedGeneratesWithCleanAttribute", testFeedGeneratesWithCleanAttribute),
         ("testFeedGeneratesWithExplicitAttribute", testFeedGeneratesWithExplicitAttribute),
         ("testFeedGeneratesWithBlockAttribute", testFeedGeneratesWithBlockAttribute),
-        ("testFeedGeneratesWithLanguageCode", testFeedGeneratesWithLanguageCode),
+        ("testFeedGeneratesWithLanguageCode", testFeedGeneratesWithLanguageCode)
     ]
 }
