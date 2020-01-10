@@ -3,14 +3,18 @@ import AEXML
 struct Podcast {
     let title: String
     let link: String
+    let blockFromITunes: Bool?
     var explicit: Bool?
+    
     
     init(title: String, 
         link: String, 
-        explicit: Bool? = nil) {
+        explicit: Bool? = nil,
+        blockFromITunes: Bool? = nil) {
         self.title = title
         self.link = link
         self.explicit = explicit
+        self.blockFromITunes = blockFromITunes
     }
     
     func getFeed() -> String{
@@ -25,6 +29,11 @@ struct Podcast {
                 channel.addChild(name: "itunes:explicit", value : "yes")
             } else {
                 channel.addChild(name: "itunes:explicit", value : "no")
+            }
+        }
+        if let blockFromITunes: Bool = blockFromITunes {
+            if blockFromITunes {
+                channel.addChild(name: "itunes:block", value : "Yes")
             }
         }
         return podcastFeed.xml.replacingOccurrences(of: "\t", with: "    ")
