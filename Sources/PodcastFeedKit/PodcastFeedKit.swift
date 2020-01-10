@@ -1,23 +1,29 @@
 import AEXML
 
-struct Podcast {
+class Podcast {
     let title: String
     let link: String
-    let blockFromITunes: Bool?
-    var explicit: Bool?
+    private var block = false
+    private var explicit: Bool?
     
     
-    init(title: String, 
-        link: String, 
-        explicit: Bool? = nil,
-        blockFromITunes: Bool? = nil) {
-        self.title = title
-        self.link = link
-        self.explicit = explicit
-        self.blockFromITunes = blockFromITunes
+   init(title: String, 
+       link: String) {
+       self.title = title
+       self.link = link
+   }
+
+    func blockFromITunes()  -> Self {
+        self.block = true
+        return self
     }
     
-    func getFeed() -> String{
+    func containsExplicitMaterial(_ explicit: Bool? = true)  -> Self {
+        self.explicit = explicit
+        return self
+    }
+    
+    func getFeed() -> String {
         let podcastFeed = AEXMLDocument()
         let attributes = ["xmlns:itunes" : "http://www.itunes.com/dtds/podcast-1.0.dtd", "version" : "2.0"]
         let rss = podcastFeed.addChild(name: "rss", attributes : attributes)
@@ -31,10 +37,8 @@ struct Podcast {
                 channel.addChild(name: "itunes:explicit", value : "no")
             }
         }
-        if let blockFromITunes: Bool = blockFromITunes {
-            if blockFromITunes {
-                channel.addChild(name: "itunes:block", value : "Yes")
-            }
+        if block {
+            channel.addChild(name: "itunes:block", value : "Yes")
         }
         return podcastFeed.xml.replacingOccurrences(of: "\t", with: "    ")
     }
