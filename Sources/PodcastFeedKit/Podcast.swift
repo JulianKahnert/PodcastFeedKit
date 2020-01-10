@@ -5,6 +5,7 @@ class Podcast {
     let link: String
     private var block = false
     private var explicit: Bool?
+    private var languageCode: String?
     
     
    init(title: String, 
@@ -20,6 +21,11 @@ class Podcast {
     
     func containsExplicitMaterial(_ explicit: Bool? = true)  -> Self {
         self.explicit = explicit
+        return self
+    }
+    
+    func withLanguageCode(_ code: String?) -> Self {
+        self.languageCode = code
         return self
     }
     
@@ -39,6 +45,9 @@ class Podcast {
         }
         if block {
             channel.addChild(name: "itunes:block", value : "Yes")
+        }
+        if let languageCode: String = languageCode {
+            channel.addChild(name: "language", value: languageCode)
         }
         return podcastFeed.xml.replacingOccurrences(of: "\t", with: "    ")
     }
