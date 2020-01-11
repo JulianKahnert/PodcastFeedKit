@@ -6,7 +6,6 @@ A Swift library for building a podcast feed from metadata and some media.
 ```swift  
 import PodcastFeedKit
 
-let podcast = Podcast(title : "My New Podcast", link : "https://my-new-podcast.dummy/feed.rss")
 let podcast = Podcast(title: "Test Podcast Title",
                       link: "https://demo.url/feed.rss")
                       .containsExplicitMaterial()
