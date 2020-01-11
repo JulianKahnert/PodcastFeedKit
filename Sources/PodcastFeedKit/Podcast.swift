@@ -12,9 +12,9 @@ class Podcast {
     private var subtitle: String?
     private var owner: (String, String)?
     private var imageLink: String?
+    private var categories: [Category] = []
 
-   init(title: String,
-        link: String) {
+   init(title: String, link: String) {
        self.title = title
        self.link = link
    }
@@ -63,6 +63,15 @@ class Podcast {
         self.imageLink = link
         return self
     }
+    
+    func withCategory(name: String, subcategory: String? = nil) -> Self {
+        return self.withCategory(category: Category(name: name, subcategory: subcategory))
+    }
+    
+    func withCategory(category: Category) -> Self {
+        self.categories.append(category)
+        return self
+    }
 
     func getFeed() -> String {
         let podcastFeed = AEXMLDocument()
@@ -95,6 +104,14 @@ class Podcast {
         if let imageLink: String = imageLink {
             channel.addChild(name: "itunes:image", attributes: ["href": imageLink])
         }
+        for category in categories {
+            let categoryNode = channel.addChild(name: "itunes:category",
+                                                attributes: ["text": category.name])
+            if let subcategory: String = category.subcategory {
+                categoryNode.addChild(name: "itunes:category",
+                                      attributes: ["text" : subcategory])
+            }
+        }
         if let explicit: Bool = explicit {
             if explicit {
                 channel.addChild(name: "itunes:explicit", value: "yes")
@@ -108,5 +125,15 @@ class Podcast {
                 }
         }
         return podcastFeed.xml.replacingOccurrences(of: "\t", with: "    ")
+    }
+}
+
+struct Category {
+    let name: String
+    let subcategory: String?
+    
+    init(name: String, subcategory: String? = nil) {
+        self.name = name
+        self.subcategory = subcategory
     }
 }

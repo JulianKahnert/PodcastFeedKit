@@ -22,6 +22,11 @@ final class PodcastFeedKitTests: XCTestCase {
                     <itunes:email>jane.appleseed@example.com</itunes:email>
                 </itunes:owner>
                 <itunes:image href="http://demo.url/artwork.jpg" />
+                <itunes:category text="Technology">
+                    <itunes:category text="Gadgets" />
+                </itunes:category>
+                <itunes:category text="TV &amp; Film" />
+                <itunes:category text="Arts" />
                 <itunes:explicit>yes</itunes:explicit>
             </channel>
         </rss>
@@ -36,6 +41,10 @@ final class PodcastFeedKitTests: XCTestCase {
                                 .withImage(link: "http://demo.url/artwork.jpg")
                                 .withCopyrightInfo("Copyright by Jane Appleseed")
                                 .withSummary("A really great podcast to listen to.")
+                                .withCategory(name: "Technology",
+                                              subcategory: "Gadgets")
+                                .withCategory(name: "TV & Film")
+                                .withCategory(name: "Arts")
                                 .withSubtitle("A show about things")
                                 .getFeed(), expectedOutput)
     }
