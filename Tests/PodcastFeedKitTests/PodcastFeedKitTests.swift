@@ -7,7 +7,7 @@ final class PodcastFeedKitTests: XCTestCase {
 
         let expectedOutput = """
         <?xml version="1.0" encoding="utf-8" standalone="no"?>
-        <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+        <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
             <channel>
                 <title>Test Podcast Title</title>
                 <link>https://demo.url/feed.rss</link>
@@ -28,6 +28,13 @@ final class PodcastFeedKitTests: XCTestCase {
                 <itunes:category text="TV &amp; Film" />
                 <itunes:category text="Arts" />
                 <itunes:explicit>yes</itunes:explicit>
+                <item>
+                    <title>My first episode</title>
+                    <itunes:author>John Doe</itunes:author>
+                    <itunes:subtitle>A short episode</itunes:subtitle>
+                    <itunes:image href="http://demo.url/ep1/artwork.jpg" />
+                    <itunes:explicit>no</itunes:explicit>
+                </item>
             </channel>
         </rss>
         """
@@ -46,6 +53,11 @@ final class PodcastFeedKitTests: XCTestCase {
                                 .withCategory(name: "TV & Film")
                                 .withCategory(name: "Arts")
                                 .withSubtitle("A show about things")
+                                .withEpisode(Episode(title: "My first episode")
+                                             .withAuthor("John Doe")
+                                             .withSubtitle("A short episode")
+                                             .withImage(link: "http://demo.url/ep1/artwork.jpg")
+                                              .containsExplicitMaterial(false))
                                 .getFeed(), expectedOutput)
     }
 

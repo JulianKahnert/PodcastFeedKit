@@ -1,6 +1,6 @@
 import AEXML
 
-class Podcast {
+open class Podcast {
     let title: String
     let link: String
     private var block: Bool?
@@ -13,6 +13,7 @@ class Podcast {
     private var owner: (String, String)?
     private var imageLink: String?
     private var categories: [Category] = []
+    private var episodes: [Episode] = []
 
    init(title: String, link: String) {
        self.title = title
@@ -36,7 +37,7 @@ class Podcast {
 
     func withAuthor(_ author: String?) -> Self {
     	self.author = author
-	return self
+        return self
     }
 
     func withCopyrightInfo(_ copyright: String?) -> Self {
@@ -72,10 +73,17 @@ class Podcast {
         self.categories.append(category)
         return self
     }
+    
+    func withEpisode(_ episode: Episode) -> Self {
+        self.episodes.append(episode)
+        return self
+    }
 
     func getFeed() -> String {
         let podcastFeed = AEXMLDocument()
-        let attributes = ["xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd", "version": "2.0"]
+        let attributes = ["xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+                          "xmlns:content": "http://purl.org/rss/1.0/modules/content/",
+                          "version": "2.0"]
         let rss = podcastFeed.addChild(name: "rss", attributes: attributes)
         let channel = rss.addChild(name: "channel")
         channel.addChild(name: "title", value: title)
@@ -123,6 +131,9 @@ class Podcast {
                 if block {
                     channel.addChild(name: "itunes:block", value: "Yes")
                 }
+        }
+        for episode in episodes {
+            channel.addChild(episode.getNode())
         }
         return podcastFeed.xml.replacingOccurrences(of: "\t", with: "    ")
     }
