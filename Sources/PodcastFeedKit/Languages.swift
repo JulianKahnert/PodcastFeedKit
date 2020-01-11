@@ -3,6 +3,6 @@
 public enum Language: String {
 
     case english = "en"
-    case english_uk = "en-gb"
-    case english_us = "en-us"
+    case englishUK = "en-gb"
+    case englishUS = "en-us"
 }

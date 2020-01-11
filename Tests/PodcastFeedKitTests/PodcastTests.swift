@@ -13,7 +13,8 @@ final class PodcastTests: XCTestCase {
             </channel>
         </rss>
         """
-        XCTAssertEqual(Podcast(title: "Test Podcast Title", link: "https://demo.url/feed.rss").getFeed(), expectedOutput)
+        XCTAssertEqual(Podcast(title: "Test Podcast Title", link: "https://demo.url/feed.rss").getFeed(),
+	    expectedOutput)
     }
 
     func testFeedGeneratesWithCleanAttribute() {
@@ -84,7 +85,7 @@ final class PodcastTests: XCTestCase {
        """
        XCTAssertEqual(Podcast(title: "Test Podcast Title",
                               link: "https://demo.url/feed.rss")
-                              .withLanguageCode(Language.english_uk.rawValue)
+                              .withLanguageCode(Language.englishUK.rawValue)
                               .getFeed(), expectedOutput)
    }
 
@@ -96,13 +97,31 @@ final class PodcastTests: XCTestCase {
            <channel>
                <title>Test Podcast Title</title>
                <link>https://demo.url/feed.rss</link>
-               <itunes:author>Jenny Appleseed</itunes:author>
+               <itunes:author>Jenny Appleseed &amp; Friends</itunes:author>
            </channel>
        </rss>
        """
        XCTAssertEqual(Podcast(title: "Test Podcast Title",
                               link: "https://demo.url/feed.rss")
-                              .withAuthor("Jenny Appleseed")
+                              .withAuthor("Jenny Appleseed & Friends")
+                              .getFeed(), expectedOutput)
+    }
+
+   func testFeedGeneratesWithCopyright() {
+
+       let expectedOutput = """
+       <?xml version="1.0" encoding="utf-8" standalone="no"?>
+       <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+           <channel>
+               <title>Test Podcast Title</title>
+               <link>https://demo.url/feed.rss</link>
+               <copyright>copyright Jenny Appleseed</copyright>
+           </channel>
+       </rss>
+       """
+       XCTAssertEqual(Podcast(title: "Test Podcast Title",
+                              link: "https://demo.url/feed.rss")
+                              .withCopyrightInfo("copyright Jenny Appleseed")
                               .getFeed(), expectedOutput)
     }
 
