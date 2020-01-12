@@ -1,17 +1,27 @@
 import AEXML
+import Foundation
 
 open class Episode {
     
     let title: String
+    let publicationDate: String?
     private var author: String?
     private var subtitle: String?
     private var imageLink: String?
     private var explicit: Bool?
     private var shortSummary: String?
     
+    convenience init(title: String, publicationDate: Date) {
+        self.init(title: title, publicationDate: publicationDate, timeZone: TimeZone(identifier: "UTC")!)
+    }
     
-    init(title: String) {
+    init(title: String, publicationDate: Date, timeZone: TimeZone) {
         self.title = title
+        let rfcDateFormat = DateFormatter()
+        rfcDateFormat.timeZone = timeZone
+        rfcDateFormat.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
+        let dateString = rfcDateFormat.string(from: publicationDate)
+        self.publicationDate = dateString
     }
     
     func withAuthor(_ author: String?) -> Self {
@@ -54,6 +64,7 @@ open class Episode {
         if let imageLink: String = imageLink {
             episodeNode.addChild(name: "itunes:image", attributes: ["href": imageLink])
         }
+        episodeNode.addChild(name: "pubDate", value: publicationDate)
         if let explicit: Bool = explicit {
             if explicit {
                 episodeNode.addChild(name: "itunes:explicit", value: "yes")

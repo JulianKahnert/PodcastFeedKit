@@ -33,11 +33,21 @@ final class PodcastFeedKitTests: XCTestCase {
                     <itunes:author>John Doe</itunes:author>
                     <itunes:subtitle>A short episode</itunes:subtitle>
                     <itunes:image href="http://demo.url/ep1/artwork.jpg" />
+                    <pubDate>Sun, 11 Jun 2000 08:00:00 +0000</pubDate>
                     <itunes:explicit>no</itunes:explicit>
                 </item>
             </channel>
         </rss>
         """
+        
+        print( getDemoDate())
+        
+        let episodeOne = Episode(title: "My first episode",
+                                 publicationDate: getDemoDate())
+            .withAuthor("John Doe")
+            .withSubtitle("A short episode")
+            .withImage(link: "http://demo.url/ep1/artwork.jpg")
+            .containsExplicitMaterial(false)
         XCTAssertEqual(Podcast(title: "Test Podcast Title",
                                link: "https://demo.url/feed.rss")
                                 .containsExplicitMaterial()
@@ -53,11 +63,7 @@ final class PodcastFeedKitTests: XCTestCase {
                                 .withCategory(name: "TV & Film")
                                 .withCategory(name: "Arts")
                                 .withSubtitle("A show about things")
-                                .withEpisode(Episode(title: "My first episode")
-                                             .withAuthor("John Doe")
-                                             .withSubtitle("A short episode")
-                                             .withImage(link: "http://demo.url/ep1/artwork.jpg")
-                                              .containsExplicitMaterial(false))
+                                .withEpisode(episodeOne)
                                 .getFeed(), expectedOutput)
     }
 
@@ -65,4 +71,17 @@ final class PodcastFeedKitTests: XCTestCase {
         ("testFullFeedGeneration", testFullFeedGeneration)
     ]
 
+}
+
+private func getDemoDate() -> Date {
+    // Specify date components
+    var dateComponents = DateComponents()
+    dateComponents.year = 2000
+    dateComponents.month = 6
+    dateComponents.day = 11
+    dateComponents.hour = 8
+    dateComponents.timeZone = TimeZone(identifier: "UTC")!
+
+    return Calendar(identifier: Calendar.Identifier.iso8601)
+        .date(from: dateComponents)!
 }
