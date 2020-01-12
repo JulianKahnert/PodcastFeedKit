@@ -1,4 +1,12 @@
+/**
+ Podcast.swift
+ PodcastFeedKit
+ Copyright (c) 2020 Callum Kerr-Edwards
+ */
+
 open class Podcast {
+    
+    // MARK: - Properties
     let title: String
     let link: String
     private var block: Bool?
@@ -12,60 +20,64 @@ open class Podcast {
     private var imageLink: String?
     private var categories: [Category] = []
     private var episodes: [Episode] = []
-
-   init(title: String, link: String) {
-       self.title = title
-       self.link = link
-   }
-
+    
+    // MARK: - init
+    
+    init(title: String, link: String) {
+        self.title = title
+        self.link = link
+    }
+    
+    // MARK: - builder functions
+    
     @discardableResult
     func blockFromITunes(_ block: Bool? = true) -> Self {
         self.block = block
         return self
     }
-
+    
     @discardableResult
     func containsExplicitMaterial(_ explicit: Bool? = true) -> Self {
         self.explicit = explicit
         return self
     }
-
+    
     @discardableResult
     func withLanguageCode(_ code: String?) -> Self {
         self.languageCode = code
         return self
     }
-
+    
     @discardableResult
     func withAuthor(_ author: String?) -> Self {
-    	self.author = author
+        self.author = author
         return self
     }
-
+    
     @discardableResult
     func withCopyrightInfo(_ copyright: String?) -> Self {
         self.copyright = copyright
         return self
     }
-
+    
     @discardableResult
     func withSummary(_ summary: String?) -> Self {
         self.summary = summary
         return self
     }
-
+    
     @discardableResult
     func withSubtitle(_ subtitle: String?) -> Self {
         self.subtitle = subtitle
         return self
     }
-
+    
     @discardableResult
     func withOwner(name: String, email: String) -> Self {
         self.owner = (name, email)
         return self
     }
-
+    
     @discardableResult
     func withImage(link: String?) -> Self {
         self.imageLink = link
@@ -88,14 +100,13 @@ open class Podcast {
         self.episodes.append(episode)
         return self
     }
-
+    
+    // MARK: - Building RSS Feed
     func getFeed() -> String {
         let attributes = ["xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
                           "xmlns:content": "http://purl.org/rss/1.0/modules/content/",
                           "version": "2.0"]
         let podcastFeed = AEXMLDocument(name: "rss", attributes: attributes)
-        
-//        let rss = podcastFeed.addChild(name: "rss", attributes: attributes)
         let channel = podcastFeed.addChild(name: "channel")
         channel.addChild(name: "title", value: title)
         channel.addChild(name: "link", value: link)
@@ -128,7 +139,7 @@ open class Podcast {
                                                 attributes: ["text": category.name])
             if let subcategory: String = category.subcategory {
                 categoryNode.addChild(name: "itunes:category",
-                                      attributes: ["text" : subcategory])
+                                      attributes: ["text": subcategory])
             }
         }
         if let explicit: Bool = explicit {
@@ -139,23 +150,13 @@ open class Podcast {
             }
         }
         if let block: Bool = block {
-                if block {
-                    channel.addChild(name: "itunes:block", value: "Yes")
-                }
+            if block {
+                channel.addChild(name: "itunes:block", value: "Yes")
+            }
         }
         for episode in episodes {
             channel.addChild(episode.getNode())
         }
-        return podcastFeed.xmlSpaces
-    }
-}
-
-struct Category {
-    let name: String
-    let subcategory: String?
-    
-    init(name: String, subcategory: String? = nil) {
-        self.name = name
-        self.subcategory = subcategory
+        return podcastFeed.xml
     }
 }

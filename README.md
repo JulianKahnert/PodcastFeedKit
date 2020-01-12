@@ -8,24 +8,24 @@ import PodcastFeedKit
 
 let podcast = Podcast(title: "Test Podcast Title",
                       link: "https://demo.url/feed.rss")
-                      .containsExplicitMaterial()
-                      .withLanguageCode(Language.english.rawValue)
-                      .withAuthor("Jane Appleseed & Friends")
-                      .withOwner(name: "Jane Appleseed",
-                                 email: "jane.appleseed@example.com")
-                      .withImage(link: "http://demo.url/artwork.jpg")
-                      .withCopyrightInfo("Copyright by Jane Appleseed")
-                      .withSummary("A really great podcast to listen to.")
-                      .withCategory(name: "Technology",
-                                    subcategory: "Gadgets")
-                      .withCategory(name: "TV & Film")
-                      .withCategory(name: "Arts")
-                      .withSubtitle("A show about things")
-                      .withEpisode(Episode(title: "My first episode")
-                                          .withAuthor("John Doe")
-                                          .withSubtitle("A short episode")
-                                          .withImage(link: "http://demo.url/ep1/artwork.jpg")
-                                          .containsExplicitMaterial(false))
+              .containsExplicitMaterial()
+              .withLanguageCode(Language.english.rawValue)
+              .withAuthor("Jane Appleseed & Friends")
+              .withOwner(name: "Jane Appleseed",
+                         email: "jane.appleseed@example.com")
+              .withImage(link: "http://demo.url/artwork.jpg")
+              .withCopyrightInfo("Copyright by Jane Appleseed")
+              .withSummary("A really great podcast to listen to.")
+              .withCategory(name: "Technology",
+                            subcategory: "Gadgets")
+              .withCategory(name: "TV & Film")
+              .withCategory(name: "Arts")
+              .withSubtitle("A show about things")
+              .withEpisode(Episode(title: "My first episode")
+                          .withAuthor("John Doe")
+                          .withSubtitle("A short episode")
+                          .withImage(link: "http://demo.url/ep1/artwork.jpg")
+                          .containsExplicitMaterial(false))
 print(podcast.getFeed())
 ```
 would produce the string

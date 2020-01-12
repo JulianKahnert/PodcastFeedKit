@@ -1,36 +1,67 @@
+/**
+ Episode.swift
+ PodcastFeedKit
+ Copyright (c) 2020 Callum Kerr-Edwards
+ */
+
 import Foundation
+import AVFoundation
 
 open class Episode {
     
     let title: String
     let publicationDate: String
-    let fileLink: String
+    let fileServerLocation: String
     let rfcDateFormat = DateFormatter()
+    let fileSizeInBytes: String
+    let fileMIMEType: String
+    let fileDuration: String
     private var author: String?
     private var subtitle: String?
     private var imageLink: String?
     private var explicit: Bool?
     private var shortSummary: String?
     private var longSummary: String?
+    private var guid: String?
     
-    convenience init(title: String, publicationDate: Date, fileLink: String) {
-        self.init(title: title,
-                  publicationDate: publicationDate,
-                  timeZone: TimeZone(identifier: "UTC")!,
-                  fileLink: fileLink)
-    }
+    // MARK: - Init
     
     init(title: String,
          publicationDate: Date,
          timeZone: TimeZone,
-         fileLink: String) {
+         audioFile: URL,
+         fileServerLocation: String) throws {
         self.title = title
         rfcDateFormat.timeZone = timeZone
         rfcDateFormat.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
         let dateString = rfcDateFormat.string(from: publicationDate)
         self.publicationDate = dateString
-        self.fileLink = fileLink
+        self.fileServerLocation = fileServerLocation
+        
+        if !audioFile.containsAudio {
+            throw EpisodeError.fileIsNotAudio(filepath: audioFile.path)
+        }
+        self.fileSizeInBytes = audioFile.fileSize
+        self.fileMIMEType = audioFile.mimeType()
+        self.fileDuration = formatMinuteSeconds(Int(CMTimeGetSeconds(AVURLAsset(url: audioFile).duration)))
     }
+    
+    convenience init(title: String,
+                     publicationDate: Date,
+                     audioFile: URL,
+                     fileServerLocation: String) throws {
+        do {
+            try self.init(title: title,
+                          publicationDate: publicationDate,
+                          timeZone: TimeZone(identifier: "UTC")!,
+                          audioFile: audioFile,
+                          fileServerLocation: fileServerLocation)
+        } catch let error {
+            throw error
+        }
+    }
+    
+    // MARK: - Builder functions
     
     @discardableResult
     func withAuthor(_ author: String?) -> Self {
@@ -43,10 +74,10 @@ open class Episode {
         self.subtitle = subtitle
         return self
     }
-
+    
     /*
-    The short summary must be html escape
-    */
+     The short summary must be html escape
+     */
     @discardableResult
     func withShortSummary(_ shortSummary: String?) -> Self {
         self.shortSummary = shortSummary
@@ -74,6 +105,14 @@ open class Episode {
         return self
     }
     
+    @discardableResult
+    func withGUID(_ guid: String?) -> Self {
+        self.guid = guid
+        return self
+    }
+    
+    // MARK: - Build XML
+    
     internal func getNode() -> AEXMLElement {
         let episodeNode = AEXMLElement(name: "item")
         episodeNode.addChild(name: "title", value: title)
@@ -93,7 +132,16 @@ open class Episode {
         if let imageLink: String = imageLink {
             episodeNode.addChild(name: "itunes:image", attributes: ["href": imageLink])
         }
+        episodeNode.addChild(name: "enclosure", attributes: ["length": fileSizeInBytes,
+                                                             "type": fileMIMEType,
+                                                             "url": fileServerLocation])
+        if let guid: String = guid {
+            episodeNode.addChild(name: "guid", value: guid)
+        } else {
+            episodeNode.addChild(name: "guid", value: fileServerLocation)
+        }
         episodeNode.addChild(name: "pubDate", value: publicationDate)
+        episodeNode.addChild(name: "itunes:duration", value: fileDuration)
         if let explicit: Bool = explicit {
             if explicit {
                 episodeNode.addChild(name: "itunes:explicit", value: "yes")
@@ -104,5 +152,22 @@ open class Episode {
         return episodeNode
     }
     
+    func getXml() -> String {
+        return getNode().xml
+    }
+    
 }
 
+// MARK: - Helper
+
+func formatMinuteSeconds(_ totalSeconds: Int) -> String {
+    
+    let minutes = Double(totalSeconds) / 60
+    let seconds = totalSeconds % 60
+    
+    return String(format: "%02d:%02d", Int(minutes), seconds)
+}
+
+enum EpisodeError: Error {
+    case fileIsNotAudio(filepath: String)
+}

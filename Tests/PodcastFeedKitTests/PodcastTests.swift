@@ -1,9 +1,15 @@
+/**
+ PodcastTests.swift
+ PodcastFeedKit
+ Copyright (c) 2020 Callum Kerr-Edwards
+ */
+
 import XCTest
 @testable import PodcastFeedKit
 
 final class PodcastTests: XCTestCase {
     func testFeedGeneratesWithMinimalAttributes() {
-
+        
         let expectedOutput = """
         <?xml version="1.0" encoding="utf-8" standalone="no"?>
         <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
@@ -14,11 +20,11 @@ final class PodcastTests: XCTestCase {
         </rss>
         """
         XCTAssertEqual(Podcast(title: "Test Podcast Title", link: "https://demo.url/feed.rss").getFeed(),
-	    expectedOutput)
+                       expectedOutput)
     }
-
+    
     func testFeedGeneratesWithCleanAttribute() {
-
+        
         let expectedOutput = """
         <?xml version="1.0" encoding="utf-8" standalone="no"?>
         <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
@@ -31,12 +37,12 @@ final class PodcastTests: XCTestCase {
         """
         XCTAssertEqual(Podcast(title: "Test Podcast Title",
                                link: "https://demo.url/feed.rss")
-                               .containsExplicitMaterial(false)
-                               .getFeed(), expectedOutput)
+            .containsExplicitMaterial(false)
+            .getFeed(), expectedOutput)
     }
-
+    
     func testFeedGeneratesWithExplicitAttribute() {
-
+        
         let expectedOutput = """
         <?xml version="1.0" encoding="utf-8" standalone="no"?>
         <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
@@ -49,13 +55,13 @@ final class PodcastTests: XCTestCase {
         """
         XCTAssertEqual(Podcast(title: "Test Podcast Title",
                                link: "https://demo.url/feed.rss")
-                               .containsExplicitMaterial()
-                               .getFeed(), expectedOutput)
+            .containsExplicitMaterial()
+            .getFeed(), expectedOutput)
     }
-
-   func testFeedGeneratesWithBlockAttribute() {
-
-       let expectedOutput = """
+    
+    func testFeedGeneratesWithBlockAttribute() {
+        
+        let expectedOutput = """
        <?xml version="1.0" encoding="utf-8" standalone="no"?>
        <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
            <channel>
@@ -65,15 +71,15 @@ final class PodcastTests: XCTestCase {
            </channel>
        </rss>
        """
-       XCTAssertEqual(Podcast(title: "Test Podcast Title",
-                              link: "https://demo.url/feed.rss")
-                              .blockFromITunes()
-                              .getFeed(), expectedOutput)
-   }
-
-   func testFeedGeneratesWithLanguageCode() {
-
-       let expectedOutput = """
+        XCTAssertEqual(Podcast(title: "Test Podcast Title",
+                               link: "https://demo.url/feed.rss")
+            .blockFromITunes()
+            .getFeed(), expectedOutput)
+    }
+    
+    func testFeedGeneratesWithLanguageCode() {
+        
+        let expectedOutput = """
        <?xml version="1.0" encoding="utf-8" standalone="no"?>
        <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
            <channel>
@@ -83,15 +89,15 @@ final class PodcastTests: XCTestCase {
            </channel>
        </rss>
        """
-       XCTAssertEqual(Podcast(title: "Test Podcast Title",
-                              link: "https://demo.url/feed.rss")
-                              .withLanguageCode(Language.englishUK.rawValue)
-                              .getFeed(), expectedOutput)
-   }
-
-   func testFeedGeneratesWithAuthor() {
-
-       let expectedOutput = """
+        XCTAssertEqual(Podcast(title: "Test Podcast Title",
+                               link: "https://demo.url/feed.rss")
+            .withLanguageCode(Language.englishUK.rawValue)
+            .getFeed(), expectedOutput)
+    }
+    
+    func testFeedGeneratesWithAuthor() {
+        
+        let expectedOutput = """
        <?xml version="1.0" encoding="utf-8" standalone="no"?>
        <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
            <channel>
@@ -101,15 +107,15 @@ final class PodcastTests: XCTestCase {
            </channel>
        </rss>
        """
-       XCTAssertEqual(Podcast(title: "Test Podcast Title",
-                              link: "https://demo.url/feed.rss")
-                              .withAuthor("Jenny Appleseed & Friends")
-                              .getFeed(), expectedOutput)
+        XCTAssertEqual(Podcast(title: "Test Podcast Title",
+                               link: "https://demo.url/feed.rss")
+            .withAuthor("Jenny Appleseed & Friends")
+            .getFeed(), expectedOutput)
     }
-
-   func testFeedGeneratesWithCopyright() {
-
-       let expectedOutput = """
+    
+    func testFeedGeneratesWithCopyright() {
+        
+        let expectedOutput = """
        <?xml version="1.0" encoding="utf-8" standalone="no"?>
        <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
            <channel>
@@ -119,12 +125,12 @@ final class PodcastTests: XCTestCase {
            </channel>
        </rss>
        """
-       XCTAssertEqual(Podcast(title: "Test Podcast Title",
-                              link: "https://demo.url/feed.rss")
-                              .withCopyrightInfo("copyright Jenny Appleseed")
-                              .getFeed(), expectedOutput)
+        XCTAssertEqual(Podcast(title: "Test Podcast Title",
+                               link: "https://demo.url/feed.rss")
+            .withCopyrightInfo("copyright Jenny Appleseed")
+            .getFeed(), expectedOutput)
     }
-
+    
     static var allTests = [
         ("testFeedGeneratesWithMinimalAttributes", testFeedGeneratesWithMinimalAttributes),
         ("testFeedGeneratesWithCleanAttribute", testFeedGeneratesWithCleanAttribute),
