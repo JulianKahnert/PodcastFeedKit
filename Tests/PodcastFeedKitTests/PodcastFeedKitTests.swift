@@ -32,6 +32,9 @@ final class PodcastFeedKitTests: XCTestCase {
                     <title>My first episode</title>
                     <itunes:author>John Doe</itunes:author>
                     <itunes:subtitle>A short episode</itunes:subtitle>
+                    <itunes:summary>A short description</itunes:summary>
+                    <description>A short description</description>
+                    <content:encoded><![CDATA[<h1>A short episode</h1><p>A short description</p>]]></content:encoded>
                     <itunes:image href="http://demo.url/ep1/artwork.jpg" />
                     <pubDate>Sun, 11 Jun 2000 08:00:00 +0000</pubDate>
                     <itunes:explicit>no</itunes:explicit>
@@ -43,10 +46,13 @@ final class PodcastFeedKitTests: XCTestCase {
         print( getDemoDate())
         
         let episodeOne = Episode(title: "My first episode",
-                                 publicationDate: getDemoDate())
+                                 publicationDate: getDemoDate(),
+                                 fileLink: "http://demo.url/ep1/file.mp3")
             .withAuthor("John Doe")
             .withSubtitle("A short episode")
             .withImage(link: "http://demo.url/ep1/artwork.jpg")
+            .withShortSummary("A short description")
+            .withLongSummary("<h1>A short episode</h1><p>A short description</p>")
             .containsExplicitMaterial(false)
         XCTAssertEqual(Podcast(title: "Test Podcast Title",
                                link: "https://demo.url/feed.rss")

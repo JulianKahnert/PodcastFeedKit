@@ -1,5 +1,3 @@
-import AEXML
-
 open class Podcast {
     let title: String
     let link: String
@@ -20,72 +18,85 @@ open class Podcast {
        self.link = link
    }
 
+    @discardableResult
     func blockFromITunes(_ block: Bool? = true) -> Self {
         self.block = block
         return self
     }
 
+    @discardableResult
     func containsExplicitMaterial(_ explicit: Bool? = true) -> Self {
         self.explicit = explicit
         return self
     }
 
+    @discardableResult
     func withLanguageCode(_ code: String?) -> Self {
         self.languageCode = code
         return self
     }
 
+    @discardableResult
     func withAuthor(_ author: String?) -> Self {
     	self.author = author
         return self
     }
 
+    @discardableResult
     func withCopyrightInfo(_ copyright: String?) -> Self {
         self.copyright = copyright
         return self
     }
 
+    @discardableResult
     func withSummary(_ summary: String?) -> Self {
         self.summary = summary
         return self
     }
 
+    @discardableResult
     func withSubtitle(_ subtitle: String?) -> Self {
         self.subtitle = subtitle
         return self
     }
 
+    @discardableResult
     func withOwner(name: String, email: String) -> Self {
         self.owner = (name, email)
         return self
     }
 
+    @discardableResult
     func withImage(link: String?) -> Self {
         self.imageLink = link
         return self
     }
     
+    @discardableResult
     func withCategory(name: String, subcategory: String? = nil) -> Self {
         return self.withCategory(category: Category(name: name, subcategory: subcategory))
     }
     
+    @discardableResult
     func withCategory(category: Category) -> Self {
         self.categories.append(category)
         return self
     }
     
+    @discardableResult
     func withEpisode(_ episode: Episode) -> Self {
         self.episodes.append(episode)
         return self
     }
 
     func getFeed() -> String {
-        let podcastFeed = AEXMLDocument()
         let attributes = ["xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
                           "xmlns:content": "http://purl.org/rss/1.0/modules/content/",
                           "version": "2.0"]
-        let rss = podcastFeed.addChild(name: "rss", attributes: attributes)
-        let channel = rss.addChild(name: "channel")
+        let podcastFeed = AEXMLDocument(name: "rss", attributes: attributes)
+        
+//        let rss = podcastFeed.addChild(name: "rss", attributes: attributes)
+        let channel = podcastFeed.addChild(name: "channel")
         channel.addChild(name: "title", value: title)
         channel.addChild(name: "link", value: link)
         if let languageCode: String = languageCode {
@@ -135,7 +146,7 @@ open class Podcast {
         for episode in episodes {
             channel.addChild(episode.getNode())
         }
-        return podcastFeed.xml.replacingOccurrences(of: "\t", with: "    ")
+        return podcastFeed.xmlSpaces
     }
 }
 
