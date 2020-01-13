@@ -96,11 +96,10 @@ open class Podcast {
         return self
     }
     
-    //    @discardableResult
-    //    func withCategory(category: Category) -> Self {
-    //        self.categories.append(category)
-    //        return self
-    //    }
+    @discardableResult
+    func withCategory(_ category: Category) -> Self {
+        return self.withCategory(name: category.parent, subcategory: category.subcategory)
+    }
     
     @discardableResult
     func withEpisode(_ episode: Episode) -> Self {
@@ -141,20 +140,28 @@ open class Podcast {
             channel.addChild(name: "itunes:summary", value: summary)
             channel.addChild(name: "description", value: summary)
         }
-        if let owner: (String, String) = owner {
+        if let owner: (name: String, email: String) = owner {
             let ownerNode = channel.addChild(name: "itunes:owner")
-            ownerNode.addChild(name: "itunes:name", value: owner.0)
-            ownerNode.addChild(name: "itunes:email", value: owner.1)
+            ownerNode.addChild(name: "itunes:name", value: owner.name)
+            ownerNode.addChild(name: "itunes:email", value: owner.email)
         }
         if let imageLink: String = imageLink {
             channel.addChild(name: "itunes:image", attributes: ["href": imageLink])
         }
         for category in categories {
-            let categoryNode = channel.addChild(name: "itunes:category",
-                                                attributes: ["text": category.name])
-            if let subcategory: String = category.subcategory {
-                categoryNode.addChild(name: "itunes:category",
-                                      attributes: ["text": subcategory])
+            if channel.hasChild(name: "itunes:category", attributes: ["text": category.name]) {
+                if let subcategory: String = category.subcategory {
+                    channel.getChild(name: "itunes:category", attributes: ["text": category.name])!
+                        .addChild(name: "itunes:category",
+                                  attributes: ["text": subcategory])
+                }
+            } else {
+                let categoryNode = channel.addChild(name: "itunes:category",
+                                                    attributes: ["text": category.name])
+                if let subcategory: String = category.subcategory {
+                    categoryNode.addChild(name: "itunes:category",
+                                          attributes: ["text": subcategory])
+                }
             }
         }
         if let explicit: Bool = explicit {

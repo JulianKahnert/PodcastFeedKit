@@ -13,12 +13,15 @@
             <itunes:name>Jane Appleseed</itunes:name>
             <itunes:email>jane.appleseed@example.com</itunes:email>
         </itunes:owner>
-        <itunes:image href="http://demo.url/artwork.jpg" />
-        <itunes:category text="Technology">
-            <itunes:category text="Gadgets" />
+        <itunes:image href="http://demo.url/artwork.jpg"/>
+        <itunes:category text="Arts">
+            <itunes:category text="Books"/>
         </itunes:category>
-        <itunes:category text="TV &amp; Film" />
-        <itunes:category text="Arts" />
+        <itunes:category text="TV &amp; Film">
+            <itunes:category text="TV Reviews"/>
+            <itunes:category text="Film Reviews"/>
+        </itunes:category>
+        <itunes:category text="Technology"/>
         <itunes:explicit>yes</itunes:explicit>
         <item>
             <title>My third episode</title>
@@ -26,8 +29,8 @@
             <itunes:subtitle>A new episode</itunes:subtitle>
             <itunes:summary>About time for another new episode</itunes:summary>
             <description>About time for another new episode</description>
-            <itunes:image href="http://demo.url/ep3/artwork.jpg" />
-            <enclosure length="2733181" type="audio/x-m4a" url="http://demo.url/ep3/file.m4b" />
+            <itunes:image href="http://demo.url/ep3/artwork.jpg"/>
+            <enclosure length="2733181" type="audio/x-m4a" url="http://demo.url/ep3/file.m4b"/>
             <guid>http://demo.url/ep3/file.m4b</guid>
             <pubDate>Fri, 17 Jan 2020 08:00:00 +0000</pubDate>
             <itunes:duration>21:37</itunes:duration>
@@ -36,8 +39,8 @@
             <title>My second episode</title>
             <itunes:author>Jane Appleseed</itunes:author>
             <itunes:subtitle>Another episode</itunes:subtitle>
-            <itunes:image href="http://demo.url/ep2/artwork.jpg" />
-            <enclosure length="764176" type="audio/mpeg" url="http://demo.url/ep2/file.mp3" />
+            <itunes:image href="http://demo.url/ep2/artwork.jpg"/>
+            <enclosure length="764176" type="audio/mpeg" url="http://demo.url/ep2/file.mp3"/>
             <guid isPermaLink="false">demo-uniqure-id</guid>
             <pubDate>Thu, 09 Jan 2020 08:00:00 +0000</pubDate>
             <itunes:duration>00:27</itunes:duration>
@@ -49,8 +52,8 @@
             <itunes:summary>A short description</itunes:summary>
             <description>A short description</description>
             <content:encoded><![CDATA[<h1>A short episode</h1><p>A short description</p>]]></content:encoded>
-            <itunes:image href="http://demo.url/ep1/artwork.jpg" />
-            <enclosure length="46468" type="audio/x-m4a" url="http://demo.url/ep1/file.m4a" />
+            <itunes:image href="http://demo.url/ep1/artwork.jpg"/>
+            <enclosure length="46468" type="audio/x-m4a" url="http://demo.url/ep1/file.m4a"/>
             <guid>http://demo.url/ep1/file.m4a</guid>
             <pubDate>Wed, 01 Jan 2020 08:00:00 +0000</pubDate>
             <itunes:duration>00:10</itunes:duration>

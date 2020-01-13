@@ -91,6 +91,26 @@ internal class AEXMLElement {
         return children
     }
     
+    
+    internal func getChild(name: String,
+                           value: String? = nil,
+                           attributes: [String: String] = [:]) -> AEXMLElement? {
+        return getChildren(name: name, value: value, attributes: attributes).first
+    }
+    
+    internal func getChildren(name: String,
+                           value: String? = nil,
+                           attributes: [String: String] = [:]) -> [AEXMLElement] {
+        return children.filter { $0.name == name && $0.value == value && $0.attributes == attributes }
+    }
+    
+    
+    internal func hasChild(name: String,
+                           value: String? = nil,
+                           attributes: [String: String] = [:]) -> Bool {
+        return !getChildren(name: name, value: value, attributes: attributes).isEmpty
+    }
+    
     /// Removes `self` from `parent` XML element.
     internal func removeFromParent() {
         if let index = parent?.children.firstIndex(where: { $0 === self }) {
@@ -115,7 +135,7 @@ internal class AEXMLElement {
         
         if value == nil && children.count == 0 {
             // close element
-            xml += " />"
+            xml += "/>"
         } else {
             if children.count > 0 {
                 // add children

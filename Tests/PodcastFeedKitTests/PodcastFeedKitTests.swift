@@ -65,10 +65,10 @@ final class PodcastFeedKitTests: XCTestCase {
                 .withImage(link: "http://demo.url/artwork.jpg")
                 .withCopyrightInfo("Copyright by Jane Appleseed")
                 .withSummary("A really great podcast to listen to.")
-                .withCategory(name: "Technology",
-                              subcategory: "Gadgets")
-                .withCategory(name: "TV & Film")
-                .withCategory(name: "Arts")
+                .withCategory(.books)
+                .withCategory(.tvReviews)
+                .withCategory(.filmReviews)
+                .withCategory(.technology)
                 .withSubtitle("A show about things")
                 .withEpisodes(episodeOne, episodeTwo, episodeThree)
             

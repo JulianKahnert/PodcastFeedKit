@@ -165,12 +165,16 @@ open class Episode {
 
 // MARK: - Helper
 
-func formatMinuteSeconds(_ totalSeconds: Int) -> String {
+internal func formatMinuteSeconds(_ totalSeconds: Int) -> String {
+    let hours: Int = totalSeconds / 3600
+    let minutes: Int = totalSeconds / 60
+    let seconds:Int = totalSeconds % 60
     
-    let minutes = Double(totalSeconds) / 60
-    let seconds = totalSeconds % 60
-    
-    return String(format: "%02d:%02d", Int(minutes), seconds)
+    if hours > 0 {
+        return String(format: "%02d:%02d:%02d", hours, minutes % 60, seconds)
+    } else {
+        return String(format: "%02d:%02d", minutes, seconds)
+    }
 }
 
 enum EpisodeError: Error {
