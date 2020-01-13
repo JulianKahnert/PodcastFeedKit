@@ -9,6 +9,8 @@ import AVFoundation
 
 open class Episode {
     
+    // MARK: - Properties
+    
     let title: String
     let publicationDate: String
     let fileServerLocation: String
@@ -136,7 +138,7 @@ open class Episode {
                                                              "type": fileMIMEType,
                                                              "url": fileServerLocation])
         if let guid: String = guid {
-            episodeNode.addChild(name: "guid", value: guid)
+            episodeNode.addChild(name: "guid", value: guid, attributes: ["isPermaLink": "false"])
         } else {
             episodeNode.addChild(name: "guid", value: fileServerLocation)
         }

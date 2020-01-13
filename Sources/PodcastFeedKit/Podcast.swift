@@ -101,6 +101,14 @@ open class Podcast {
         return self
     }
     
+    @discardableResult
+    func withEpisodes(_ episodes: Episode...) -> Self {
+        for episode in episodes {
+           self.withEpisode(episode)
+        }
+        return self
+    }
+    
     // MARK: - Building RSS Feed
     func getFeed() -> String {
         let attributes = ["xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",

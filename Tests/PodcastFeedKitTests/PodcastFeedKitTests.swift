@@ -6,56 +6,21 @@
 import XCTest
 @testable import PodcastFeedKit
 
+// MARK: - Start of Test
+
 final class PodcastFeedKitTests: XCTestCase {
     
     func testFullFeedGeneration() {
-        
-        let expectedOutput = """
-        <?xml version="1.0" encoding="utf-8" standalone="no"?>
-        <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
-            <channel>
-                <title>Test Podcast Title</title>
-                <link>https://demo.url/feed.rss</link>
-                <language>en</language>
-                <copyright>Copyright by Jane Appleseed</copyright>
-                <itunes:subtitle>A show about things</itunes:subtitle>
-                <itunes:author>Jane Appleseed &amp; Friends</itunes:author>
-                <itunes:summary>A really great podcast to listen to.</itunes:summary>
-                <description>A really great podcast to listen to.</description>
-                <itunes:owner>
-                    <itunes:name>Jane Appleseed</itunes:name>
-                    <itunes:email>jane.appleseed@example.com</itunes:email>
-                </itunes:owner>
-                <itunes:image href="http://demo.url/artwork.jpg" />
-                <itunes:category text="Technology">
-                    <itunes:category text="Gadgets" />
-                </itunes:category>
-                <itunes:category text="TV &amp; Film" />
-                <itunes:category text="Arts" />
-                <itunes:explicit>yes</itunes:explicit>
-                <item>
-                    <title>My first episode</title>
-                    <itunes:author>John Doe</itunes:author>
-                    <itunes:subtitle>A short episode</itunes:subtitle>
-                    <itunes:summary>A short description</itunes:summary>
-                    <description>A short description</description>
-                    <content:encoded><![CDATA[<h1>A short episode</h1><p>A short description</p>]]></content:encoded>
-                    <itunes:image href="http://demo.url/ep1/artwork.jpg" />
-                    <enclosure length="46468" type="audio/x-m4a" url="http://demo.url/ep1/file.m4a" />
-                    <guid>http://demo.url/ep1/file.m4a</guid>
-                    <pubDate>Sun, 11 Jun 2000 08:00:00 +0000</pubDate>
-                    <itunes:duration>00:10</itunes:duration>
-                    <itunes:explicit>no</itunes:explicit>
-                </item>
-            </channel>
-        </rss>
-        """
         do {
             
-            let demoMP3URL: URL = try! Resource(name: "demo", type: "m4a").url
+            // MARK:- Expected Full RSS XML
+            let expectedOutput = try String(contentsOf: try! Resource(name: "feed", type: "rss").url, encoding: .utf8)
+            
+            // MARK:- Episode One
+            let demoM4AURL: URL = try! Resource(name: "demo", type: "m4a").url
             let episodeOne = try Episode(title: "My first episode",
-                                         publicationDate: getDemoDate(),
-                                         audioFile: demoMP3URL,
+                                         publicationDate: getDemoDate(year: 2000, month: 6, day: 11),
+                                         audioFile: demoM4AURL,
                                          fileServerLocation: "http://demo.url/ep1/file.m4a")
                 
                 .withAuthor("John Doe")
@@ -65,8 +30,33 @@ final class PodcastFeedKitTests: XCTestCase {
                 .withLongSummary("<h1>A short episode</h1><p>A short description</p>")
                 .containsExplicitMaterial(false)
             
-            XCTAssertEqual(Podcast(title: "Test Podcast Title",
-                                   link: "https://demo.url/feed.rss")
+            // MARK:- Episode Two
+            let demoMP3URL: URL = try! Resource(name: "demo", type: "mp3").url
+            let episodeTwo = try Episode(title: "My second episode",
+                                         publicationDate: getDemoDate(year: 2000, month: 7, day: 9),
+                                         audioFile: demoMP3URL,
+                                         fileServerLocation: "http://demo.url/ep2/file.mp3")
+                
+                .withAuthor("Jane Appleseed")
+                .withSubtitle("Another episode")
+                .withImage(link: "http://demo.url/ep2/artwork.jpg")
+                .withGUID("demo-uniqure-id")
+            
+            // MARK:- Episode Three
+            let demoM4BURL: URL = try! Resource(name: "demo", type: "m4b").url
+            let episodeThree = try Episode(title: "My third episode",
+                                           publicationDate: getDemoDate(year: 2000, month: 8, day: 19),
+                                           audioFile: demoM4BURL,
+                                           fileServerLocation: "http://demo.url/ep3/file.m4b")
+                
+                .withAuthor("Jane Appleseed")
+                .withSubtitle("A new episode")
+                .withShortSummary("About time for another new episode")
+                .withImage(link: "http://demo.url/ep3/artwork.jpg")
+            
+            // MARK:- Podcast
+            let podcast = Podcast(title: "Test Podcast Title",
+                                  link: "https://demo.url/feed.rss")
                 .containsExplicitMaterial()
                 .withLanguageCode(Language.english.rawValue)
                 .withAuthor("Jane Appleseed & Friends")
@@ -80,8 +70,10 @@ final class PodcastFeedKitTests: XCTestCase {
                 .withCategory(name: "TV & Film")
                 .withCategory(name: "Arts")
                 .withSubtitle("A show about things")
-                .withEpisode(episodeOne)
-                .getFeed(), expectedOutput)
+                .withEpisodes(episodeOne, episodeTwo, episodeThree)
+            
+            // MARK:- Assertion
+            XCTAssertEqual(podcast.getFeed()+"\n", expectedOutput)
             
         } catch let error {
             print(error)
@@ -95,12 +87,14 @@ final class PodcastFeedKitTests: XCTestCase {
     
 }
 
-private func getDemoDate() -> Date {
+// MARK:- Helpers
+
+private func getDemoDate(year: Int, month: Int, day: Int) -> Date {
     // Specify date components
     var dateComponents = DateComponents()
-    dateComponents.year = 2000
-    dateComponents.month = 6
-    dateComponents.day = 11
+    dateComponents.year = year
+    dateComponents.month = month
+    dateComponents.day = day
     dateComponents.hour = 8
     dateComponents.timeZone = TimeZone(identifier: "UTC")!
     
@@ -119,7 +113,8 @@ struct Resource {
         
         let testCaseURL = URL(fileURLWithPath: "\(sourceFile)", isDirectory: false)
         let testsFolderURL = testCaseURL.deletingLastPathComponent()
-        let resourcesFolderURL = testsFolderURL.deletingLastPathComponent().appendingPathComponent("Resources", isDirectory: true)
+        let resourcesFolderURL = testsFolderURL.deletingLastPathComponent()
+            .appendingPathComponent("Resources", isDirectory: true)
         self.url = resourcesFolderURL.appendingPathComponent("\(name).\(type)", isDirectory: false)
         if !FileManager.default.fileExists(atPath: url.path) {
             fatalError("\(url.path) does not exist.")
