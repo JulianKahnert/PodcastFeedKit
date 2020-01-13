@@ -84,6 +84,6 @@ would produce the string
 
 Use [Swift Package Manager](https://swift.org/package-manager/):
 
-	```swift
+```swift
     .package(url: "https://github.com/CallumKerrEdwards/PodcastFeedKit.git", from: "0.1.0")
-	```
+```
