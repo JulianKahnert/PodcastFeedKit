@@ -21,6 +21,28 @@
         <itunes:category text="Arts" />
         <itunes:explicit>yes</itunes:explicit>
         <item>
+            <title>My third episode</title>
+            <itunes:author>Jane Appleseed</itunes:author>
+            <itunes:subtitle>A new episode</itunes:subtitle>
+            <itunes:summary>About time for another new episode</itunes:summary>
+            <description>About time for another new episode</description>
+            <itunes:image href="http://demo.url/ep3/artwork.jpg" />
+            <enclosure length="2733181" type="audio/x-m4a" url="http://demo.url/ep3/file.m4b" />
+            <guid>http://demo.url/ep3/file.m4b</guid>
+            <pubDate>Fri, 17 Jan 2020 08:00:00 +0000</pubDate>
+            <itunes:duration>21:37</itunes:duration>
+        </item>
+        <item>
+            <title>My second episode</title>
+            <itunes:author>Jane Appleseed</itunes:author>
+            <itunes:subtitle>Another episode</itunes:subtitle>
+            <itunes:image href="http://demo.url/ep2/artwork.jpg" />
+            <enclosure length="764176" type="audio/mpeg" url="http://demo.url/ep2/file.mp3" />
+            <guid isPermaLink="false">demo-uniqure-id</guid>
+            <pubDate>Thu, 09 Jan 2020 08:00:00 +0000</pubDate>
+            <itunes:duration>00:27</itunes:duration>
+        </item>
+        <item>
             <title>My first episode</title>
             <itunes:author>John Doe</itunes:author>
             <itunes:subtitle>A short episode</itunes:subtitle>
@@ -30,31 +52,9 @@
             <itunes:image href="http://demo.url/ep1/artwork.jpg" />
             <enclosure length="46468" type="audio/x-m4a" url="http://demo.url/ep1/file.m4a" />
             <guid>http://demo.url/ep1/file.m4a</guid>
-            <pubDate>Sun, 11 Jun 2000 08:00:00 +0000</pubDate>
+            <pubDate>Wed, 01 Jan 2020 08:00:00 +0000</pubDate>
             <itunes:duration>00:10</itunes:duration>
             <itunes:explicit>no</itunes:explicit>
-        </item>
-        <item>
-            <title>My second episode</title>
-            <itunes:author>Jane Appleseed</itunes:author>
-            <itunes:subtitle>Another episode</itunes:subtitle>
-            <itunes:image href="http://demo.url/ep2/artwork.jpg" />
-            <enclosure length="764176" type="audio/mpeg" url="http://demo.url/ep2/file.mp3" />
-            <guid isPermaLink="false">demo-uniqure-id</guid>
-            <pubDate>Sun, 09 Jul 2000 08:00:00 +0000</pubDate>
-            <itunes:duration>00:27</itunes:duration>
-        </item>
-        <item>
-            <title>My third episode</title>
-            <itunes:author>Jane Appleseed</itunes:author>
-            <itunes:subtitle>A new episode</itunes:subtitle>
-            <itunes:summary>About time for another new episode</itunes:summary>
-            <description>About time for another new episode</description>
-            <itunes:image href="http://demo.url/ep3/artwork.jpg" />
-            <enclosure length="2733181" type="audio/x-m4a" url="http://demo.url/ep3/file.m4b" />
-            <guid>http://demo.url/ep3/file.m4b</guid>
-            <pubDate>Sat, 19 Aug 2000 08:00:00 +0000</pubDate>
-            <itunes:duration>21:37</itunes:duration>
         </item>
     </channel>
 </rss>

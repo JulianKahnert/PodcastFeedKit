@@ -11,11 +11,6 @@ extension URL {
         return nil
     }
     
-//    var fileSize: String {
-//        return ByteCountFormatter.string(fromByteCount: Int64(attributes?[.size] as? UInt64 ?? UInt64(0)),
-//                                         countStyle: .file)
-//    }
-    
     var fileSize: String {
         return String(Int64(attributes?[.size] as? UInt64 ?? UInt64(0)))
     }

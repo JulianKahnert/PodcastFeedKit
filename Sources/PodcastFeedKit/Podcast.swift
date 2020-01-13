@@ -18,7 +18,7 @@ open class Podcast {
     private var subtitle: String?
     private var owner: (String, String)?
     private var imageLink: String?
-    private var categories: [Category] = []
+    private var categories: [(name: String, subcategory: String?)] = []
     private var episodes: [Episode] = []
     
     // MARK: - init
@@ -45,6 +45,12 @@ open class Podcast {
     @discardableResult
     func withLanguageCode(_ code: String?) -> Self {
         self.languageCode = code
+        return self
+    }
+    
+    @discardableResult
+    func withLanguage(_ language: Language?) -> Self {
+        self.withLanguageCode(language?.rawValue)
         return self
     }
     
@@ -86,14 +92,15 @@ open class Podcast {
     
     @discardableResult
     func withCategory(name: String, subcategory: String? = nil) -> Self {
-        return self.withCategory(category: Category(name: name, subcategory: subcategory))
-    }
-    
-    @discardableResult
-    func withCategory(category: Category) -> Self {
-        self.categories.append(category)
+        self.categories.append((name: name, subcategory: subcategory))
         return self
     }
+    
+    //    @discardableResult
+    //    func withCategory(category: Category) -> Self {
+    //        self.categories.append(category)
+    //        return self
+    //    }
     
     @discardableResult
     func withEpisode(_ episode: Episode) -> Self {
@@ -104,7 +111,7 @@ open class Podcast {
     @discardableResult
     func withEpisodes(_ episodes: Episode...) -> Self {
         for episode in episodes {
-           self.withEpisode(episode)
+            self.withEpisode(episode)
         }
         return self
     }
@@ -162,7 +169,7 @@ open class Podcast {
                 channel.addChild(name: "itunes:block", value: "Yes")
             }
         }
-        for episode in episodes {
+        for episode in episodes.sorted(by: { $0.publicationDate > $1.publicationDate }) {
             channel.addChild(episode.getNode())
         }
         return podcastFeed.xml

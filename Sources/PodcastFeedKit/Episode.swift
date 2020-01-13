@@ -12,7 +12,8 @@ open class Episode {
     // MARK: - Properties
     
     let title: String
-    let publicationDate: String
+    let publicationDate: Date
+    let timeZone: TimeZone
     let fileServerLocation: String
     let rfcDateFormat = DateFormatter()
     let fileSizeInBytes: String
@@ -34,12 +35,9 @@ open class Episode {
          audioFile: URL,
          fileServerLocation: String) throws {
         self.title = title
-        rfcDateFormat.timeZone = timeZone
-        rfcDateFormat.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
-        let dateString = rfcDateFormat.string(from: publicationDate)
-        self.publicationDate = dateString
+        self.publicationDate = publicationDate
+        self.timeZone = timeZone
         self.fileServerLocation = fileServerLocation
-        
         if !audioFile.containsAudio {
             throw EpisodeError.fileIsNotAudio(filepath: audioFile.path)
         }
@@ -142,7 +140,12 @@ open class Episode {
         } else {
             episodeNode.addChild(name: "guid", value: fileServerLocation)
         }
-        episodeNode.addChild(name: "pubDate", value: publicationDate)
+        
+        rfcDateFormat.timeZone = timeZone
+        rfcDateFormat.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
+        let dateString = rfcDateFormat.string(from: publicationDate)
+        episodeNode.addChild(name: "pubDate", value: dateString)
+        
         episodeNode.addChild(name: "itunes:duration", value: fileDuration)
         if let explicit: Bool = explicit {
             if explicit {

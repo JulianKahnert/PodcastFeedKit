@@ -13,13 +13,13 @@ final class PodcastFeedKitTests: XCTestCase {
     func testFullFeedGeneration() {
         do {
             
-            // MARK:- Expected Full RSS XML
+            // MARK: - Expected Full RSS XML
             let expectedOutput = try String(contentsOf: try! Resource(name: "feed", type: "rss").url, encoding: .utf8)
             
-            // MARK:- Episode One
+            // MARK: - Episode One
             let demoM4AURL: URL = try! Resource(name: "demo", type: "m4a").url
             let episodeOne = try Episode(title: "My first episode",
-                                         publicationDate: getDemoDate(year: 2000, month: 6, day: 11),
+                                         publicationDate: getDemoDate(year: 2020, month: 1, day: 1),
                                          audioFile: demoM4AURL,
                                          fileServerLocation: "http://demo.url/ep1/file.m4a")
                 
@@ -30,10 +30,10 @@ final class PodcastFeedKitTests: XCTestCase {
                 .withLongSummary("<h1>A short episode</h1><p>A short description</p>")
                 .containsExplicitMaterial(false)
             
-            // MARK:- Episode Two
+            // MARK: - Episode Two
             let demoMP3URL: URL = try! Resource(name: "demo", type: "mp3").url
             let episodeTwo = try Episode(title: "My second episode",
-                                         publicationDate: getDemoDate(year: 2000, month: 7, day: 9),
+                                         publicationDate: getDemoDate(year: 2020, month: 1, day: 9),
                                          audioFile: demoMP3URL,
                                          fileServerLocation: "http://demo.url/ep2/file.mp3")
                 
@@ -42,10 +42,10 @@ final class PodcastFeedKitTests: XCTestCase {
                 .withImage(link: "http://demo.url/ep2/artwork.jpg")
                 .withGUID("demo-uniqure-id")
             
-            // MARK:- Episode Three
+            // MARK: - Episode Three
             let demoM4BURL: URL = try! Resource(name: "demo", type: "m4b").url
             let episodeThree = try Episode(title: "My third episode",
-                                           publicationDate: getDemoDate(year: 2000, month: 8, day: 19),
+                                           publicationDate: getDemoDate(year: 2020, month: 1, day: 17),
                                            audioFile: demoM4BURL,
                                            fileServerLocation: "http://demo.url/ep3/file.m4b")
                 
@@ -54,11 +54,11 @@ final class PodcastFeedKitTests: XCTestCase {
                 .withShortSummary("About time for another new episode")
                 .withImage(link: "http://demo.url/ep3/artwork.jpg")
             
-            // MARK:- Podcast
+            // MARK: - Podcast
             let podcast = Podcast(title: "Test Podcast Title",
                                   link: "https://demo.url/feed.rss")
                 .containsExplicitMaterial()
-                .withLanguageCode(Language.english.rawValue)
+                .withLanguage(.english)
                 .withAuthor("Jane Appleseed & Friends")
                 .withOwner(name: "Jane Appleseed",
                            email: "jane.appleseed@example.com")
@@ -72,7 +72,7 @@ final class PodcastFeedKitTests: XCTestCase {
                 .withSubtitle("A show about things")
                 .withEpisodes(episodeOne, episodeTwo, episodeThree)
             
-            // MARK:- Assertion
+            // MARK: - Assertion
             XCTAssertEqual(podcast.getFeed()+"\n", expectedOutput)
             
         } catch let error {
@@ -87,7 +87,7 @@ final class PodcastFeedKitTests: XCTestCase {
     
 }
 
-// MARK:- Helpers
+// MARK: - Helpers
 
 private func getDemoDate(year: Int, month: Int, day: Int) -> Date {
     // Specify date components
