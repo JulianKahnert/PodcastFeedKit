@@ -7,8 +7,9 @@ A Swift library for building a podcast feed from metadata and some media.
 import PodcastFeedKit
 
 let audioFileURL: URL = // url to local audio file 
+let episodeReleaseDate: Date = // date episode is to be released, e.g. the 2010-06-11:0800
 let episodeOne = try Episode(title: "My first episode",
-                             publicationDate: getDemoDate(),
+                             publicationDate: episodeReleaseDate,
                              audioFile: audioFileURL,
                              fileServerLocation: "http://demo.url/ep1/file.m4a")
     .withAuthor("John Doe")
@@ -71,7 +72,7 @@ would produce the string
             <itunes:image href="http://demo.url/ep1/artwork.jpg" />
             <enclosure length="46468" type="audio/x-m4a" url="http://demo.url/ep1/file.m4a" />
             <guid>http://demo.url/ep1/file.m4a</guid>
-            <pubDate>Sun, 11 Jun 2000 08:00:00 +0000</pubDate>
+            <pubDate>Sun, 11 Jun 2010 08:00:00 +0000</pubDate>
             <itunes:duration>00:10</itunes:duration>
             <itunes:explicit>no</itunes:explicit>
         </item>
@@ -81,7 +82,7 @@ would produce the string
 
 ## Installation
 
-- [Swift Package Manager](https://swift.org/package-manager/):
+Use [Swift Package Manager](https://swift.org/package-manager/):
 
 	```swift
     .package(url: "https://github.com/CallumKerrEdwards/PodcastFeedKit.git", from: "0.1.0")
