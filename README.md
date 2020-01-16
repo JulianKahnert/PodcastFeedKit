@@ -87,3 +87,9 @@ Use [Swift Package Manager](https://swift.org/package-manager/):
 ```swift
     .package(url: "https://github.com/CallumKerrEdwards/PodcastFeedKit.git", from: "0.1.0")
 ```
+
+## Tasks
+
+- [x] Get first working version
+- [ ] Add all rss supported languages
+- [ ] Add all iTunes supported languages
