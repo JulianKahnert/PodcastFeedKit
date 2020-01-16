@@ -1,7 +1,7 @@
 /**
  Podcast.swift
- PodcastFeedKit
  Copyright (c) 2020 Callum Kerr-Edwards
+ Licensed under the MIT license.
  */
 
 open class Podcast {

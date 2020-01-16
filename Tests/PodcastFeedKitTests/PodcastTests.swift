@@ -1,7 +1,7 @@
 /**
  PodcastTests.swift
- PodcastFeedKit
  Copyright (c) 2020 Callum Kerr-Edwards
+ Licensed under the MIT license.
  */
 
 @testable import PodcastFeedKit
