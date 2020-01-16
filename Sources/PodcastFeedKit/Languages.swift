@@ -6,7 +6,6 @@
  */
 
 public enum Language: String {
-    
     case english = "en"
     case englishUK = "en-gb"
     case englishUS = "en-us"

@@ -1,5 +1,5 @@
-import Foundation
 import CoreServices
+import Foundation
 
 extension URL {
     var attributes: [FileAttributeKey: Any]? {
@@ -10,11 +10,11 @@ extension URL {
         }
         return nil
     }
-    
+
     var fileSize: String {
-        return String(Int64(attributes?[.size] as? UInt64 ?? UInt64(0)))
+        String(Int64(attributes?[.size] as? UInt64 ?? UInt64(0)))
     }
-    
+
     func mimeType() -> String {
         let pathExtension = self.pathExtension
         if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue() {
@@ -27,7 +27,7 @@ extension URL {
         }
         return "application/octet-stream"
     }
-    
+
     var containsAudio: Bool {
         let mimeType = self.mimeType()
         guard let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeType as CFString, nil)?.takeRetainedValue() else {

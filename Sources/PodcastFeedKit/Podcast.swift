@@ -5,8 +5,8 @@
  */
 
 open class Podcast {
-    
     // MARK: - Properties
+
     let title: String
     let link: String
     private var block: Bool?
@@ -20,102 +20,103 @@ open class Podcast {
     private var imageLink: String?
     private var categories: [(name: String, subcategory: String?)] = []
     private var episodes: [Episode] = []
-    
+
     // MARK: - init
-    
+
     init(title: String, link: String) {
         self.title = title
         self.link = link
     }
-    
+
     // MARK: - builder functions
-    
+
     @discardableResult
     func blockFromITunes(_ block: Bool? = true) -> Self {
         self.block = block
         return self
     }
-    
+
     @discardableResult
     func containsExplicitMaterial(_ explicit: Bool? = true) -> Self {
         self.explicit = explicit
         return self
     }
-    
+
     @discardableResult
     func withLanguageCode(_ code: String?) -> Self {
-        self.languageCode = code
+        languageCode = code
         return self
     }
-    
+
     @discardableResult
     func withLanguage(_ language: Language?) -> Self {
-        self.withLanguageCode(language?.rawValue)
+        withLanguageCode(language?.rawValue)
         return self
     }
-    
+
     @discardableResult
     func withAuthor(_ author: String?) -> Self {
         self.author = author
         return self
     }
-    
+
     @discardableResult
     func withCopyrightInfo(_ copyright: String?) -> Self {
         self.copyright = copyright
         return self
     }
-    
+
     @discardableResult
     func withSummary(_ summary: String?) -> Self {
         self.summary = summary
         return self
     }
-    
+
     @discardableResult
     func withSubtitle(_ subtitle: String?) -> Self {
         self.subtitle = subtitle
         return self
     }
-    
+
     @discardableResult
     func withOwner(name: String, email: String) -> Self {
-        self.owner = (name, email)
+        owner = (name, email)
         return self
     }
-    
+
     @discardableResult
     func withImage(link: String?) -> Self {
-        self.imageLink = link
+        imageLink = link
         return self
     }
-    
+
     @discardableResult
     func withCategory(name: String, subcategory: String? = nil) -> Self {
-        self.categories.append((name: name, subcategory: subcategory))
+        categories.append((name: name, subcategory: subcategory))
         return self
     }
-    
+
     @discardableResult
     func withCategory(_ category: Category) -> Self {
-        return self.withCategory(name: category.parent, subcategory: category.subcategory)
+        withCategory(name: category.parent, subcategory: category.subcategory)
     }
-    
+
     @discardableResult
     func withEpisode(_ episode: Episode) -> Self {
-        self.episodes.append(episode)
+        episodes.append(episode)
         return self
     }
-    
+
     @discardableResult
     func withEpisodes(_ episodes: Episode...) -> Self {
         for episode in episodes {
-            self.withEpisode(episode)
+            withEpisode(episode)
         }
         return self
     }
-    
+
     // MARK: - Building RSS Feed
+
     func getFeed() -> String {
         let attributes = ["xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
                           "xmlns:content": "http://purl.org/rss/1.0/modules/content/",

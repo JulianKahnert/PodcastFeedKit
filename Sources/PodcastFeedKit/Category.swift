@@ -16,52 +16,51 @@ enum Category {
     case food
     case performingArts
     case visualArts
-    
+
     case business
-    
+
     case comedy
-    
+
     case education
-    
+
     case fiction
     case comedyFiction
     case drama
     case scienceFiction
-    
+
     case government
-    
+
     case history
-    
+
     case healthAndFitness
-    
+
     case kidsAndFamily
-    
+
     case leisure
-    
+
     case music
-    
+
     case news
-    
+
     case religionAndSpirituality
-    
+
     case science
-    
+
     case societyAndCulture
-    
+
     case sports
-    
+
     case technology
-    
+
     case trueCrime
-    
+
     case tvAndFilm
     case afterShows
     case filmHistory
     case filmInterviews
     case filmReviews
     case tvReviews
-    
-    
+
     public var parent: String {
         switch self {
         case .arts, .books, .design, .fashionAndBeauty, .food, .performingArts, .visualArts:
@@ -102,10 +101,9 @@ enum Category {
             return "True Crime"
         case .tvAndFilm, .afterShows, .filmHistory, .filmInterviews, .filmReviews, .tvReviews:
             return "TV & Film"
-            
         }
     }
-    
+
     public var subcategory: String? {
         switch self {
         case .arts, .business, .comedy, .education, .fiction, .government, .history, .healthAndFitness, .kidsAndFamily, .leisure,

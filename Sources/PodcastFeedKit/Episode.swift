@@ -4,13 +4,12 @@
  Copyright (c) 2020 Callum Kerr-Edwards
  */
 
-import Foundation
 import AVFoundation
+import Foundation
 
 open class Episode {
-    
     // MARK: - Properties
-    
+
     let title: String
     let publicationDate: Date
     let timeZone: TimeZone
@@ -26,9 +25,9 @@ open class Episode {
     private var shortSummary: String?
     private var longSummary: String?
     private var guid: String?
-    
+
     // MARK: - Init
-    
+
     init(title: String,
          publicationDate: Date,
          timeZone: TimeZone,
@@ -41,11 +40,11 @@ open class Episode {
         if !audioFile.containsAudio {
             throw EpisodeError.fileIsNotAudio(filepath: audioFile.path)
         }
-        self.fileSizeInBytes = audioFile.fileSize
-        self.fileMIMEType = audioFile.mimeType()
-        self.fileDuration = formatMinuteSeconds(Int(CMTimeGetSeconds(AVURLAsset(url: audioFile).duration)))
+        fileSizeInBytes = audioFile.fileSize
+        fileMIMEType = audioFile.mimeType()
+        fileDuration = formatMinuteSeconds(Int(CMTimeGetSeconds(AVURLAsset(url: audioFile).duration)))
     }
-    
+
     convenience init(title: String,
                      publicationDate: Date,
                      audioFile: URL,
@@ -56,25 +55,25 @@ open class Episode {
                           timeZone: TimeZone(identifier: "UTC")!,
                           audioFile: audioFile,
                           fileServerLocation: fileServerLocation)
-        } catch let error {
+        } catch {
             throw error
         }
     }
-    
+
     // MARK: - Builder functions
-    
+
     @discardableResult
     func withAuthor(_ author: String?) -> Self {
         self.author = author
         return self
     }
-    
+
     @discardableResult
     func withSubtitle(_ subtitle: String?) -> Self {
         self.subtitle = subtitle
         return self
     }
-    
+
     /*
      The short summary must be html escape
      */
@@ -83,7 +82,7 @@ open class Episode {
         self.shortSummary = shortSummary
         return self
     }
-    
+
     /*
      The long summary can include html tags
      */
@@ -92,27 +91,27 @@ open class Episode {
         self.longSummary = longSummary
         return self
     }
-    
+
     @discardableResult
     func withImage(link: String?) -> Self {
-        self.imageLink = link
+        imageLink = link
         return self
     }
-    
+
     @discardableResult
     func containsExplicitMaterial(_ explicit: Bool? = true) -> Self {
         self.explicit = explicit
         return self
     }
-    
+
     @discardableResult
     func withGUID(_ guid: String?) -> Self {
         self.guid = guid
         return self
     }
-    
+
     // MARK: - Build XML
-    
+
     internal func getNode() -> AEXMLElement {
         let episodeNode = AEXMLElement(name: "item")
         episodeNode.addChild(name: "title", value: title)
@@ -140,12 +139,12 @@ open class Episode {
         } else {
             episodeNode.addChild(name: "guid", value: fileServerLocation)
         }
-        
+
         rfcDateFormat.timeZone = timeZone
         rfcDateFormat.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
         let dateString = rfcDateFormat.string(from: publicationDate)
         episodeNode.addChild(name: "pubDate", value: dateString)
-        
+
         episodeNode.addChild(name: "itunes:duration", value: fileDuration)
         if let explicit: Bool = explicit {
             if explicit {
@@ -156,11 +155,10 @@ open class Episode {
         }
         return episodeNode
     }
-    
+
     func getXml() -> String {
-        return getNode().xml
+        getNode().xml
     }
-    
 }
 
 // MARK: - Helper
@@ -168,8 +166,8 @@ open class Episode {
 internal func formatMinuteSeconds(_ totalSeconds: Int) -> String {
     let hours: Int = totalSeconds / 3600
     let minutes: Int = totalSeconds / 60
-    let seconds:Int = totalSeconds % 60
-    
+    let seconds: Int = totalSeconds % 60
+
     if hours > 0 {
         return String(format: "%02d:%02d:%02d", hours, minutes % 60, seconds)
     } else {
