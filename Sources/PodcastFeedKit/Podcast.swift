@@ -23,7 +23,7 @@ open class Podcast {
 
     // MARK: - init
 
-    init(title: String, link: String) {
+    public init(title: String, link: String) {
         self.title = title
         self.link = link
     }
@@ -31,84 +31,84 @@ open class Podcast {
     // MARK: - builder functions
 
     @discardableResult
-    func blockFromITunes(_ block: Bool? = true) -> Self {
+    open func blockFromITunes(_ block: Bool? = true) -> Self {
         self.block = block
         return self
     }
 
     @discardableResult
-    func containsExplicitMaterial(_ explicit: Bool? = true) -> Self {
+    open func containsExplicitMaterial(_ explicit: Bool? = true) -> Self {
         self.explicit = explicit
         return self
     }
 
     @discardableResult
-    func withLanguageCode(_ code: String?) -> Self {
+    open func withLanguageCode(_ code: String?) -> Self {
         languageCode = code
         return self
     }
 
     @discardableResult
-    func withLanguage(_ language: Language?) -> Self {
+    open func withLanguage(_ language: Language?) -> Self {
         withLanguageCode(language?.rawValue)
         return self
     }
 
     @discardableResult
-    func withAuthor(_ author: String?) -> Self {
+    open func withAuthor(_ author: String?) -> Self {
         self.author = author
         return self
     }
 
     @discardableResult
-    func withCopyrightInfo(_ copyright: String?) -> Self {
+    open func withCopyrightInfo(_ copyright: String?) -> Self {
         self.copyright = copyright
         return self
     }
 
     @discardableResult
-    func withSummary(_ summary: String?) -> Self {
+    open func withSummary(_ summary: String?) -> Self {
         self.summary = summary
         return self
     }
 
     @discardableResult
-    func withSubtitle(_ subtitle: String?) -> Self {
+    open func withSubtitle(_ subtitle: String?) -> Self {
         self.subtitle = subtitle
         return self
     }
 
     @discardableResult
-    func withOwner(name: String, email: String) -> Self {
+    open func withOwner(name: String, email: String) -> Self {
         owner = (name, email)
         return self
     }
 
     @discardableResult
-    func withImage(link: String?) -> Self {
+    open func withImage(link: String?) -> Self {
         imageLink = link
         return self
     }
 
     @discardableResult
-    func withCategory(name: String, subcategory: String? = nil) -> Self {
+    open func withCategory(name: String, subcategory: String? = nil) -> Self {
         categories.append((name: name, subcategory: subcategory))
         return self
     }
 
     @discardableResult
-    func withCategory(_ category: Category) -> Self {
+    open func withCategory(_ category: Category) -> Self {
         withCategory(name: category.parent, subcategory: category.subcategory)
     }
 
     @discardableResult
-    func withEpisode(_ episode: Episode) -> Self {
+    open func withEpisode(_ episode: Episode) -> Self {
         episodes.append(episode)
         return self
     }
 
     @discardableResult
-    func withEpisodes(_ episodes: Episode...) -> Self {
+    open func withEpisodes(_ episodes: Episode...) -> Self {
         for episode in episodes {
             withEpisode(episode)
         }
@@ -117,11 +117,11 @@ open class Podcast {
 
     // MARK: - Building RSS Feed
 
-    func getFeed() -> String {
+    open func getFeed() -> String {
         let attributes = ["xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
                           "xmlns:content": "http://purl.org/rss/1.0/modules/content/",
                           "version": "2.0"]
-        let podcastFeed = AEXMLDocument(name: "rss", attributes: attributes)
+        let podcastFeed = RSSFeed(attributes: attributes)
         let channel = podcastFeed.addChild(name: "channel")
         channel.addChild(name: "title", value: title)
         channel.addChild(name: "link", value: link)

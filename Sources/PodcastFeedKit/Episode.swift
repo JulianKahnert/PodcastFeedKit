@@ -28,11 +28,11 @@ open class Episode {
 
     // MARK: - Init
 
-    init(title: String,
-         publicationDate: Date,
-         timeZone: TimeZone,
-         audioFile: URL,
-         fileServerLocation: String) throws {
+    public init(title: String,
+                publicationDate: Date,
+                timeZone: TimeZone,
+                audioFile: URL,
+                fileServerLocation: String) throws {
         self.title = title
         self.publicationDate = publicationDate
         self.timeZone = timeZone
@@ -63,13 +63,13 @@ open class Episode {
     // MARK: - Builder functions
 
     @discardableResult
-    func withAuthor(_ author: String?) -> Self {
+    open func withAuthor(_ author: String?) -> Self {
         self.author = author
         return self
     }
 
     @discardableResult
-    func withSubtitle(_ subtitle: String?) -> Self {
+    open func withSubtitle(_ subtitle: String?) -> Self {
         self.subtitle = subtitle
         return self
     }
@@ -78,7 +78,7 @@ open class Episode {
      The short summary must be html escape
      */
     @discardableResult
-    func withShortSummary(_ shortSummary: String?) -> Self {
+    open func withShortSummary(_ shortSummary: String?) -> Self {
         self.shortSummary = shortSummary
         return self
     }
@@ -87,33 +87,33 @@ open class Episode {
      The long summary can include html tags
      */
     @discardableResult
-    func withLongSummary(_ longSummary: String?) -> Self {
+    open func withLongSummary(_ longSummary: String?) -> Self {
         self.longSummary = longSummary
         return self
     }
 
     @discardableResult
-    func withImage(link: String?) -> Self {
+    open func withImage(link: String?) -> Self {
         imageLink = link
         return self
     }
 
     @discardableResult
-    func containsExplicitMaterial(_ explicit: Bool? = true) -> Self {
+    open func containsExplicitMaterial(_ explicit: Bool? = true) -> Self {
         self.explicit = explicit
         return self
     }
 
     @discardableResult
-    func withGUID(_ guid: String?) -> Self {
+    open func withGUID(_ guid: String?) -> Self {
         self.guid = guid
         return self
     }
 
     // MARK: - Build XML
 
-    internal func getNode() -> AEXMLElement {
-        let episodeNode = AEXMLElement(name: "item")
+    internal func getNode() -> XMLElement {
+        let episodeNode = XMLElement(name: "item")
         episodeNode.addChild(name: "title", value: title)
         if let author: String = author {
             episodeNode.addChild(name: "itunes:author", value: author)
@@ -156,7 +156,7 @@ open class Episode {
         return episodeNode
     }
 
-    func getXml() -> String {
+    open func getXml() -> String {
         getNode().xml
     }
 }

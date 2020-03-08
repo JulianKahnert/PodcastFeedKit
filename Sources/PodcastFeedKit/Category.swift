@@ -8,7 +8,7 @@ import Foundation
 
 /// Categories found from https://help.apple.com/itc/podcasts_connect/#/itc9267a2f12
 
-enum Category {
+public enum Category {
     case arts
     case books
     case design

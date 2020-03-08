@@ -27,7 +27,7 @@ extension URL {
             if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
                 return mimetype as String
             }
-            if uti as String == "com.apple.protected-mpeg-4-audio" {
+            if (uti as String).starts(with: "com.apple.protected-mpeg-4-audio") {
                 return "audio/x-m4a"
             }
         }

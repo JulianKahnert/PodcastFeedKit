@@ -16,11 +16,21 @@ import XCTest
 
 final class PodcastFeedKitTests: XCTestCase {
     func testFullFeedGeneration() {
+        var expectedOutput: String?
+
         do {
             // MARK: - Expected Full RSS XML
 
-            let expectedOutput = try String(contentsOf: try! Resource(name: "feed", type: "rss").url, encoding: .utf8)
+            let expectedOutputFile = try Resource(name: "feed", type: "rss").url
+            print(expectedOutputFile)
+            expectedOutput = try String(contentsOf: expectedOutputFile, encoding: .utf8)
 
+        } catch {
+            print(error)
+            XCTFail()
+        }
+
+        do {
             // MARK: - Episode One
 
             let demoM4AURL: URL = try! Resource(name: "demo", type: "m4a").url
