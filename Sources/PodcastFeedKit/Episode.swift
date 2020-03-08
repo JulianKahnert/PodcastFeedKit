@@ -45,10 +45,10 @@ open class Episode {
         fileDuration = formatMinuteSeconds(Int(CMTimeGetSeconds(AVURLAsset(url: audioFile).duration)))
     }
 
-    convenience init(title: String,
-                     publicationDate: Date,
-                     audioFile: URL,
-                     fileServerLocation: String) throws {
+    public convenience init(title: String,
+                            publicationDate: Date,
+                            audioFile: URL,
+                            fileServerLocation: String) throws {
         do {
             try self.init(title: title,
                           publicationDate: publicationDate,
