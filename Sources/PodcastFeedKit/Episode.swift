@@ -10,14 +10,14 @@ import Foundation
 open class Episode {
     // MARK: - Properties
 
-    let title: String
-    let publicationDate: Date
+    public let title: String
+    public let publicationDate: Date
     let timeZone: TimeZone
-    let fileServerLocation: String
-    let rfcDateFormat = DateFormatter()
-    let fileSizeInBytes: String
-    let fileMIMEType: String
-    let fileDuration: String
+    public let fileServerLocation: String
+    private let rfcDateFormat = DateFormatter()
+    public let fileSizeInBytes: String
+    public let fileMIMEType: String
+    public let fileDuration: String
     private var author: String?
     private var subtitle: String?
     private var imageLink: String?
