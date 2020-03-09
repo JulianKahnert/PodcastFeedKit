@@ -115,6 +115,12 @@ open class Podcast {
         return self
     }
 
+    @discardableResult
+    open func withEpisodes(_ episodes: [Episode]) -> Self {
+        self.episodes = episodes
+        return self
+    }
+
     // MARK: - Building RSS Feed
 
     open func getFeed() -> String {
