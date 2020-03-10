@@ -25,10 +25,15 @@ extension URL {
         let pathExtension = self.pathExtension
         if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue() {
             if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
-                return mimetype as String
+                let mime = mimetype as String
+                if mime == "audio/x-m4a" {
+                    return "audio/mp4a-latm"
+                } else {
+                    return mime
+                }
             }
             if (uti as String).starts(with: "com.apple.protected-mpeg-4-audio") {
-                return "audio/x-m4a"
+                return "audio/mp4a-latm"
             }
         }
         return "application/octet-stream"
