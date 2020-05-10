@@ -3,7 +3,7 @@
  Copyright (c) 2020 Callum Kerr-Edwards
  Licensed under the MIT license.
  */
-#if vices)canImport(CoreSer
+#if canImport(CoreServices)
 import CoreServices
 #endif
 import Foundation
