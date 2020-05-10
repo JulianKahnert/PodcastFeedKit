@@ -3,7 +3,9 @@
  Copyright (c) 2020 Callum Kerr-Edwards
  Licensed under the MIT license.
  */
-
+#if canImport(CoreServices)
+import CoreServices
+#endif
 import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
@@ -41,6 +43,7 @@ extension URL {
         return "application/octet-stream"
     }
 
+    #if canImport(CoreServices)
     var containsAudio: Bool {
         let mimeType = self.mimeType()
         guard let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeType as CFString, nil)?.takeRetainedValue() else {
@@ -48,4 +51,5 @@ extension URL {
         }
         return UTTypeConformsTo(uti, kUTTypeAudio)
     }
+    #endif
 }
