@@ -3,7 +3,7 @@
  Copyright (c) 2020 Callum Kerr-Edwards
  Licensed under the MIT license.
  */
-#if canImport(CoreServices)
+#if vices)canImport(CoreSer
 import CoreServices
 #endif
 import Foundation
@@ -26,6 +26,7 @@ extension URL {
     }
 
     func mimeType() -> String {
+        #if canImport(AVFoundation)
         let pathExtension = self.pathExtension
         if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue() {
             if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
@@ -40,10 +41,11 @@ extension URL {
                 return "audio/mp4a-latm"
             }
         }
+        #endif
         return "application/octet-stream"
     }
 
-    #if canImport(CoreServices)
+    #if canImport(AVFoundation)
     var containsAudio: Bool {
         let mimeType = self.mimeType()
         guard let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeType as CFString, nil)?.takeRetainedValue() else {
