@@ -4,7 +4,9 @@
  Licensed under the MIT license.
  */
 
+#if canImport(AVFoundation)
 import AVFoundation
+#endif
 import Foundation
 
 open class Episode {
@@ -17,7 +19,9 @@ open class Episode {
     private let rfcDateFormat = DateFormatter()
     public let fileSizeInBytes: String
     public let fileMIMEType: String
+    #if canImport(AVFoundation)
     public let fileDuration: String
+    #endif
     private var author: String?
     private var subtitle: String?
     private var imageLink: String?
@@ -42,7 +46,9 @@ open class Episode {
         }
         fileSizeInBytes = audioFile.fileSize
         fileMIMEType = audioFile.mimeType()
+        #if canImport(AVFoundation)
         fileDuration = formatMinuteSeconds(Int(CMTimeGetSeconds(AVURLAsset(url: audioFile).duration)))
+        #endif
     }
 
     public convenience init(title: String,
@@ -145,7 +151,9 @@ open class Episode {
         let dateString = rfcDateFormat.string(from: publicationDate)
         episodeNode.addChild(name: "pubDate", value: dateString)
 
+        #if canImport(AVFoundation)
         episodeNode.addChild(name: "itunes:duration", value: fileDuration)
+        #endif
         if let explicit: Bool = explicit {
             if explicit {
                 episodeNode.addChild(name: "itunes:explicit", value: "yes")
