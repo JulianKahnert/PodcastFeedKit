@@ -41,9 +41,11 @@ open class Episode {
         self.publicationDate = publicationDate
         self.timeZone = timeZone
         self.fileServerLocation = fileServerLocation
+        #if canImport(CoreServices)
         if !audioFile.containsAudio {
             throw EpisodeError.fileIsNotAudio(filepath: audioFile.path)
         }
+        #endif
         fileSizeInBytes = audioFile.fileSize
         fileMIMEType = audioFile.mimeType()
         #if canImport(AVFoundation)
