@@ -4,8 +4,10 @@
  Licensed under the MIT license.
  */
 
-import CoreServices
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 extension URL {
     var attributes: [FileAttributeKey: Any]? {
