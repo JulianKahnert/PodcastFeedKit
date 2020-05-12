@@ -41,8 +41,9 @@ extension URL {
                 return "audio/mp4a-latm"
             }
         }
-        #endif
         return "application/octet-stream"
+        #endif
+        return "audio/mp4a-latm"
     }
 
     #if canImport(AVFoundation)
